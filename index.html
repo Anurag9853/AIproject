@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>India Travel Planner</title>
+    <meta name="description" content="Plan your perfect trip to India" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="css/toast.css">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border-left-color: #3b82f6;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gray-100">
+    <div id="toast-container"></div>
+    <div class="container mx-auto p-5">
+      <h1 class="text-4xl font-bold text-center mb-5">India Travel Planner 🏕️🌴</h1>
+      <p class="text-center mb-8">Find the perfect plan for your next adventure in India!</p>
+      
+      <div class="grid gap-8 md:grid-cols-[1fr_1fr] lg:grid-cols-[2fr_3fr]">
+        <div>
+          <!-- Travel Form Section -->
+          <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">Tell Us Your India Travel Preferences</h2>
+            <form id="travel-form" class="space-y-4">
+              <div class="space-y-2">
+                <label for="destination" class="block text-sm font-medium">Where in India do you want to go?</label>
+                <div class="relative">
+                  <i data-feather="map-pin" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="width: 18px; height: 18px;"></i>
+                  <input
+                    id="destination"
+                    class="pl-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Enter Indian destination"
+                    required
+                  />
+                </div>
+                <div id="destination-suggestions" class="absolute z-10 bg-white border rounded-md shadow-md mt-1 max-h-48 overflow-y-auto w-full max-w-[calc(50%-3rem)] hidden"></div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="days" class="block text-sm font-medium">How many days are you planning?</label>
+                <div class="relative">
+                  <i data-feather="calendar" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="width: 18px; height: 18px;"></i>
+                  <input
+                    id="days"
+                    type="number"
+                    class="pl-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Number of days"
+                    min="1"
+                    value="1"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="budget" class="block text-sm font-medium">What is your budget?</label>
+                <div class="relative">
+                  <i data-feather="dollar-sign" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="width: 18px; height: 18px;"></i>
+                  <select
+                    id="budget"
+                    class="pl-10 w-full h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                    required
+                  >
+                    <option value="" disabled selected>Select budget range</option>
+                    <option value="cheap">Budget - Under ₹2,000/day</option>
+                    <option value="moderate">Standard - ₹2,000-₹5,000/day</option>
+                    <option value="luxury">Premium - Above ₹5,000/day</option>
+                  </select>
+                  <i data-feather="chevron-down" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="width: 18px; height: 18px;"></i>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="travelers" class="block text-sm font-medium">Who will you be traveling with?</label>
+                <div class="relative">
+                  <i data-feather="users" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="width: 18px; height: 18px;"></i>
+                  <select
+                    id="travelers"
+                    class="pl-10 w-full h-10 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none"
+                    required
+                  >
+                    <option value="" disabled selected>Select travelers</option>
+                    <option value="just-me">Just Me - A sole traveler in exploration</option>
+                    <option value="couple">A Couple - Two travelers in tandem</option>
+                    <option value="family">Family - A group of fun-loving adventurers</option>
+                    <option value="friends">Friends - A bunch of thrill-seekers</option>
+                  </select>
+                  <i data-feather="chevron-down" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" style="width: 18px; height: 18px;"></i>
+                </div>
+              </div>
+
+              <button 
+                type="submit" 
+                id="submit-button"
+                class="w-full h-10 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              >
+                Generate India Itinerary
+              </button>
+            </form>
+          </div>
+        </div>
+        
+        <div>
+          <!-- Itinerary Result Section -->
+          <div id="itinerary-container" class="space-y-6">
+            <div id="loading-state" class="hidden">
+              <div class="bg-white p-6 rounded-lg shadow space-y-4">
+                <div class="h-8 w-3/4 bg-gray-200 rounded animate-pulse"></div>
+                <div class="h-6 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+                <div class="h-6 w-2/3 bg-gray-200 rounded animate-pulse"></div>
+                <div class="h-6 w-1/2 bg-gray-200 rounded animate-pulse"></div>
+                <div class="h-32 w-full bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </div>
+            
+            <div id="empty-state" class="bg-white p-6 rounded-lg shadow text-center">
+              <h2 class="text-xl font-semibold mb-3">Your Travel Itinerary</h2>
+              <p class="text-gray-500">
+                Fill out your travel preferences to generate a customized itinerary.
+              </p>
+            </div>
+            
+            <div id="result-state" class="hidden"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load utility scripts first -->
+    <script src="js/utils.js"></script>
+    <script src="js/formComponents.js"></script>
+    
+    <!-- Load functionality scripts -->
+    <script src="js/toast.js"></script>
+    <script src="js/destinations.js"></script>
+    <script src="js/itineraryService.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>
